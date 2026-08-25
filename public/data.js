@@ -21,7 +21,7 @@ const lotteryData = [
   { id: 17, name: '韩十九', number: '017' },
   { id: 18, name: '杨二十', number: '018' },
   { id: 19, name: '朱二一', number: '019' },
-  { id: 20, name: '秦二二', number: '020' },
+  { id: 19, name: '秦二二', number: '020' },
 ];
 
 // 导出数据供其他文件使用

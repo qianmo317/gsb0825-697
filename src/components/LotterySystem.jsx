@@ -96,7 +96,7 @@ function LotterySystem() {
 
         // 从可用列表中移除已选中的项
         finalResults.forEach(item => {
-          const index = availableItemsRef.current.findIndex(d => d.id === item.id)
+          const index = availableItemsRef.current.findLastIndex(d => d.id === item.id)
           if (index > -1) {
             availableItemsRef.current.splice(index, 1)
           }
