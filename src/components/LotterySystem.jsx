@@ -19,6 +19,7 @@ function LotterySystem() {
   const [customSpeed, setCustomSpeed] = useState(150)
   const [useCustomSpeed, setUseCustomSpeed] = useState(false)
   const [availableCount, setAvailableCount] = useState(0)
+  const [drawnCount, setDrawnCount] = useState(0)
   
   const animationRef = useRef(null)
   const availableItemsRef = useRef([])
@@ -95,15 +96,14 @@ function LotterySystem() {
         }
 
         // 从可用列表中移除已选中的项
-        finalResults.forEach(item => {
-          const index = availableItemsRef.current.findLastIndex(d => d.id === item.id)
-          if (index > -1) {
-            availableItemsRef.current.splice(index, 1)
-          }
-        })
+        const selectedIds = new Set(finalResults.map(item => item.id))
+        availableItemsRef.current = availableItemsRef.current.filter(
+          item => !selectedIds.has(item.id)
+        )
 
         setResults(finalResults)
         setAvailableCount(availableItemsRef.current.length)
+        setDrawnCount(prev => prev + finalResults.length)
         setCurrentDisplay(null)
         setIsDrawing(false)
       }
@@ -120,6 +120,7 @@ function LotterySystem() {
     setIsDrawing(false)
     setResults([])
     setCurrentDisplay(null)
+    setDrawnCount(0)
     availableItemsRef.current = [...data]
     setAvailableCount(data.length)
   }
@@ -187,7 +188,7 @@ function LotterySystem() {
                     </div>
                     <div className="w-px h-10 bg-white/40 rounded-full"></div>
                     <div className="text-center transform transition-transform hover:scale-110">
-                      <div className="text-3xl font-extrabold mb-1 drop-shadow-lg">{results.length}</div>
+                      <div className="text-3xl font-extrabold mb-1 drop-shadow-lg">{drawnCount}</div>
                       <div className="text-xs font-medium opacity-95 tracking-wide">已抽取</div>
                     </div>
                   </div>
