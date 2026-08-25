@@ -94,13 +94,11 @@ function LotterySystem() {
           finalResults.push(selectedItem)
         }
 
-        // 从可用列表中移除已选中的项
-        finalResults.forEach(item => {
-          const index = availableItemsRef.current.findLastIndex(d => d.id === item.id)
-          if (index > -1) {
-            availableItemsRef.current.splice(index, 1)
-          }
-        })
+        // 从可用列表中移除已选中的项（按对象引用精确移除，不依赖 id，避免重复 id 误删）
+        const selectedRefs = new Set(finalResults)
+        availableItemsRef.current = availableItemsRef.current.filter(
+          d => !selectedRefs.has(d)
+        )
 
         setResults(finalResults)
         setAvailableCount(availableItemsRef.current.length)
