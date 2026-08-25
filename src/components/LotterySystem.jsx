@@ -94,13 +94,11 @@ function LotterySystem() {
           finalResults.push(selectedItem)
         }
 
-        // 从可用列表中移除已选中的项
-        finalResults.forEach(item => {
-          const index = availableItemsRef.current.findLastIndex(d => d.id === item.id)
-          if (index > -1) {
-            availableItemsRef.current.splice(index, 1)
-          }
-        })
+        // 从可用列表中移除已选中的项（按对象引用身份匹配，避免 id 重复时误删他人）
+        const drawnSet = new Set(finalResults)
+        availableItemsRef.current = availableItemsRef.current.filter(
+          item => !drawnSet.has(item)
+        )
 
         setResults(finalResults)
         setAvailableCount(availableItemsRef.current.length)
@@ -187,7 +185,7 @@ function LotterySystem() {
                     </div>
                     <div className="w-px h-10 bg-white/40 rounded-full"></div>
                     <div className="text-center transform transition-transform hover:scale-110">
-                      <div className="text-3xl font-extrabold mb-1 drop-shadow-lg">{results.length}</div>
+                      <div className="text-3xl font-extrabold mb-1 drop-shadow-lg">{data.length - availableCount}</div>
                       <div className="text-xs font-medium opacity-95 tracking-wide">已抽取</div>
                     </div>
                   </div>
