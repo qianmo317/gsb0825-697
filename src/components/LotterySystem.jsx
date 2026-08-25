@@ -94,9 +94,9 @@ function LotterySystem() {
           finalResults.push(selectedItem)
         }
 
-        // 从可用列表中移除已选中的项
+        // 从可用列表中移除已选中的项（按对象引用匹配，避免 id 重复导致误删）
         finalResults.forEach(item => {
-          const index = availableItemsRef.current.findLastIndex(d => d.id === item.id)
+          const index = availableItemsRef.current.indexOf(item)
           if (index > -1) {
             availableItemsRef.current.splice(index, 1)
           }
